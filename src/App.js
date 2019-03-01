@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import logo from './logo.svg';
 import './App.css';
+import RoomList from './components/RoomList.js';
 
 var config = {
   apiKey: "AIzaSyBaDIz1H4BvbVwRtY9jbaireMLGkiFauYo",
@@ -14,21 +14,40 @@ var config = {
 firebase.initializeApp(config);
 
 class App extends Component {
-  
+  constructor(props) {
+      super(props)
+      this.state = {
+        activeRoom: '',
+        user: ''
+      };
+
+    }
+
+  setActiveRoom(room) {
+    this.setState({ activeRoom: room });
+  }
+
+
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
+            <h1>Bloc Chat</h1>
+
           <a
             className="App-link"
             href="https://reactjs.org"
             target="_blank"
             rel="noopener noreferrer"
           >
+
+          <RoomList
+            firebase= { firebase }
+            setActiveRoom={ this.setActiveRoom.bind(this) }
+            activeRoom={ this.state.activeRoom }
+          />
+
             Learn React
           </a>
         </header>
