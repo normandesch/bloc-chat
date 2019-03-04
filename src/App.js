@@ -35,12 +35,7 @@ class App extends Component {
         <header className="App-header">
             <h1>Bloc Chat</h1>
 
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+
 
           <RoomList
             firebase= { firebase }
@@ -48,8 +43,8 @@ class App extends Component {
             activeRoom={ this.state.activeRoom }
           />
 
-            Learn React
-          </a>
+
+          
         </header>
       </div>
     );
