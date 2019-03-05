@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-
 class MessageList extends Component {
+
   constructor(props) {
     super(props);
 
@@ -13,51 +13,67 @@ class MessageList extends Component {
     }
 
     this.messagesRef = this.props.firebase.database().ref("messages");
+    this.handleChange=this.handleChange.bind(this);
+    this.createMessage=this.createMessage.bind(this);
+    this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
   }
 
   componentDidMount() {
-      this.messagesRef.on('child_added', snapshot => {
-        const messages = snapshot.val();
-        this.setState({ messages: this.state.messages.concat( messages ) });
-      });
-    }
+    this.messagesRef.on('child_added', snapshot => {
+      const messages = snapshot.val();
+      this.setState({ messages: this.state.messages.concat( messages ) });
+    });
+  }
 
-    handleChange(e) {
-      e.preventDefault();
-      const currentUser = this.props.user === null ? "Guest" : this.props.user.displayName;
-      this.setState({
-        username: currentUser,
-        content: e.target.value,
-        sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
-        roomId: this.props.activeRoom
-      })
-    }
+  handleChange(e) {
+    e.preventDefault();
+    const currentUser = this.props.user === null ? "Guest" : this.props.user.displayName;
+    this.setState({
+      username: currentUser,
+      content: e.target.value,
+      sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
+      roomId: this.props.activeRoom
+    })
+  }
 
-    createMessage(e) {
-      this.messagesRef.push({
-        username: this.state.username,
-        content: this.state.content,
-        sentAt: this.state.sentAt,
-        roomId: this.props.activeRoom.key
-      })
-      this.setState({
-        username: "",
-        content: "",
-        sentAt: "",
-        roomId: ""
-      })
-    }
+  createMessage(e) {
+    this.messagesRef.push({
+      username: this.state.username,
+      content: this.state.content,
+      sentAt: this.state.sentAt,
+      roomId: this.props.activeRoom.key
+    })
+    this.setState({
+      username: "",
+      content: "",
+      sentAt: "",
+      roomId: ""
+    })
+  }
 
-    handleMessageSubmit(e) {
-      e.preventDefault();
-      this.createMessage();
-      this.setState({
-        content: "",
-        sentAt: this.formatTime()
-       });
-    }
+  handleMessageSubmit(e) {
+    e.preventDefault();
+    this.createMessage();
+    this.setState({
+      content: "",
+      sentAt: this.formatTime()
+     });
+  }
 
-    render() {
+  formatTime(time) {
+    const date = new Date(time);
+    const year = date.getFullYear();
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const month = months[date.getMonth()];
+    const day = date.getDate();
+    const hour = date.getHours();
+    const min = date.getMinutes();
+    const sec = date.getSeconds();
+    const timestamp = month + ' ' + day + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+    return timestamp;
+  }
+
+  render() {
     return (
       <div className="message-list">
         <h2 className="room-name">{this.props.activeRoom ? this.props.activeRoom.name : 'Please select a room' }</h2>
