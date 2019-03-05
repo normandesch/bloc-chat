@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import './App.css';
 import RoomList from './components/RoomList.js';
+import MessageList from './components/MessageList.js';
 
 var config = {
   apiKey: "AIzaSyBaDIz1H4BvbVwRtY9jbaireMLGkiFauYo",
@@ -14,41 +15,56 @@ var config = {
 firebase.initializeApp(config);
 
 class App extends Component {
-  constructor(props) {
-      super(props)
-      this.state = {
+    constructor(props) {
+      super(props);
+
+      this.state={
         activeRoom: '',
-        user: ''
-      };
+  
+      }
+
+      this.setActiveRoom = this.setActiveRoom.bind(this);
+
 
     }
 
-  setActiveRoom(room) {
-    this.setState({ activeRoom: room });
+    setUser(user) {
+      this.setState({ activeUser: user })
+    }
+
+    setActiveRoom(room) {
+      this.setState({ activeRoom: room })
+      console.log(this.state.activeRoom)
+    }
+
+
+    render () {
+      return (
+        <div className='App'>
+          <header>
+            <h1>BLOC-CHAT</h1>
+          </header>
+          <main>
+            <section id="sidebar">
+              <RoomList
+                firebase={firebase}
+                activeRoom={this.state.activeRoom}
+                setActiveRoom={this.setActiveRoom}
+              />
+            </section>
+            <section id="main">
+              />
+              <MessageList
+                firebase={firebase}
+                activeRoom={this.state.activeRoom}
+                user={this.state.activeUser}
+                setUser={this.setUser}
+              />
+            </section>
+          </main>
+        </div>
+      )
+    }
   }
 
-
-
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-            <h1>Bloc Chat</h1>
-
-
-
-          <RoomList
-            firebase= { firebase }
-            setActiveRoom={ this.setActiveRoom.bind(this) }
-            activeRoom={ this.state.activeRoom }
-          />
-
-
-          
-        </header>
-      </div>
-    );
-  }
-}
-
-export default App;
+  export default App;
