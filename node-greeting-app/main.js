@@ -1,0 +1,16 @@
+const greetings = require("./greeting.js");
+
+// "Hello"
+greetings.greetingEnglish();
+
+// "Konichiwa"
+greetings.greetingJapanese();
+
+// "Hola"
+greetings.greetingSpanish();
+
+// "Hallo"
+greetings.greetingIcelandic();
+
+const circle = require('./circle.js');
+console.log(`The area of a circle of radius 4 is ${circle.area(4)}`);
